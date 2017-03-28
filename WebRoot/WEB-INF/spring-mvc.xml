@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
+	<context:component-scan base-package="com.psst.*.controller" />
+	<aop:aspectj-autoproxy/>
+	<tx:annotation-driven />
+	<!-- Spring MVC JSON配置 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean id="fastJsonHttpMessageConverter"
+					class="com.psst.common.util.FastJsonHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html;charset=UTF-8</value><!-- 避免IE出现下载JSON文件的情况 -->
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
+
+	<!-- 拦截器 -->
+	<!-- <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			 <mvc:exclude-mapping path="/sap/javascript"/>  
+			<bean class="com.hcicloud.sap.interceptors.SecurityInterceptor">
+				不需要权限验证的地址
+				<property name="excludeUrls">
+		          <list>
+		            登录页面
+		            <value>/login</value>
+		            <value>/dologin</value>
+		            首页左侧功能菜单
+		            <value>/privilege/tree</value>
+		            批量添加流水
+		            <value>/voice/addBatch</value>
+		            批量添加流水
+		            <value>/voice/editBatch</value>
+		            语音分析接口
+		            <value>/interfaces/voiceAnalysis</value>
+		          </list>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
+	
+  <!--将日志类注入到bean中。 -->
+	<!-- <bean id="systemLog" class="com.hcicloud.sap.common.utils.SystemLogAspect"></bean>
+	<aop:config>
+		调用日志类
+		<aop:aspect id="b" ref="systemLog">
+			add, edit, delete, login, logout会被拦截
+			<aop:pointcut id="addLog" expression="execution(* com.hcicloud.sap.controller ..*.add(..))" />
+			<aop:pointcut id="editLog" expression="execution(* com.hcicloud.sap.controller ..*.edit(..))" />
+			<aop:pointcut id="deleteLog" expression="execution(* com.hcicloud.sap.controller ..*.delete(..))" />
+			<aop:pointcut id="loginLog" expression="execution(* com.hcicloud.sap.controller ..*.dologin(..))" />
+			<aop:pointcut id="logoutLog" expression="execution(* com.hcicloud.sap.controller ..*.logout(..))" />
+			before方法
+			<aop:before pointcut-ref="logoutLog" method="before" />
+			<aop:before pointcut-ref="deleteLog" method="before" />
+			after方法
+			<aop:after pointcut-ref="addLog" method="after" />
+			<aop:after pointcut-ref="editLog" method="after" />
+			<aop:after pointcut-ref="loginLog" method="after" />
+		</aop:aspect>
+	</aop:config> -->
+	 <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <property name="defaultEncoding" value="UTF-8"/>  
+        <!-- 指定所上传文件的总大小不能超过200KB。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->  
+        <property name="maxUploadSize" value="10485760000"/>  
+    </bean>  
+      
+    <!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->  
+    <!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->  
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+        <property name="exceptionMappings">  
+            <props>  
+                <!-- 遇到MaxUploadSizeExceededException异常时，自动跳转到/WEB-INF/jsp/error_fileupload.jsp页面 -->  
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error_fileupload</prop>  
+            </props>  
+        </property>  
+    </bean>  
+	
+</beans>

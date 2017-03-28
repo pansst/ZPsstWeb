@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.psst.stock.entity.StockTransInfo" table="m_stock_trans_info" >
+    	<id name="id">
+			  <generator class="native"/>
+		</id>
+		<property name="stockId" column="stock_id"/>
+		<property name="openPrice" column="open_price"/>
+		<property name="oldPrice" column="old_price"/>
+		<property name="realPrice" column="real_price"/>
+		<property name="maxPrice" column="max_price"/>
+		<property name="minPrice" column="min_price"/>
+		<property name="dealStocks" column="deal_stocks"/>
+		<property name="dealMoney" column="deal_money"/>
+		<property name="saleNum1" column="sale_num1"/>
+		<property name="salePrice1" column="sale_price1"/>
+		<property name="saleNum2" column="sale_num2"/>
+		<property name="salePrice2" column="sale_price2"/>
+		<property name="saleNum3" column="sale_num3"/>
+		<property name="salePrice3" column="sale_price3"/>
+		<property name="saleNum4" column="sale_num4"/>
+		<property name="salePrice4" column="sale_price4"/>
+		<property name="saleNum5" column="sale_num5"/>
+		<property name="salePrice5" column="sale_price5"/>
+		<property name="buyNum1" column="buy_num1"/>
+		<property name="buyPrice1" column="buy_price1"/>
+		<property name="buyNum2" column="buy_num2"/>
+		<property name="buyPrice2" column="buy_price2"/>
+		<property name="buyNum3" column="buy_num3"/>
+		<property name="buyPrice3" column="buy_price3"/>
+		<property name="buyNum4" column="buy_num4"/>
+		<property name="buyPrice4" column="buy_price4"/>
+		<property name="buyNum5" column="buy_num5"/>
+		<property name="buyPrice5" column="buy_price5"/>
+		<property name="createTime" column="create_time"/>
+    </class>
+</hibernate-mapping>

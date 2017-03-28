@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.psst.stock.entity.StockInfo" table="m_stock_base_info" >
+    	<id name="id">
+			  <generator class="native"/>
+		</id>
+		<property name="type" column="type"/>
+		<property name="typeStr" column="type_str"/>
+		<property name="stockCode" column="stock_code"/>
+		<property name="stockName" column="stock_name"/>
+		<property name="attentionState" column="attention_state"/>
+		<property name="buyState" column="buy_state"/>
+		<property name="realPrice" column="real_price"/>
+		<property name="supplyStocks" column="supply_stocks"/>
+		<property name="stockWorth" column="stock_worth"/>
+		<property name="state" column="state"/>
+		<property name="updateTime" column="update_time"/>
+    </class>
+</hibernate-mapping>
