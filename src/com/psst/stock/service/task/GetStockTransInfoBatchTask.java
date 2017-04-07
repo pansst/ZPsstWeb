@@ -20,12 +20,24 @@ import com.psst.stock.util.StockRedisUtil;
 /**
  * @author yongsheng.shi
  * @version 创建时间：2017-3-23 上午10:57:04
- * 批量抓取信息
+ * 批量抓取信息 任务实体
  */
 public class GetStockTransInfoBatchTask implements TaskInterface{
+	/**
+	 * 任务信息存储key
+	 */
 	private String bacthRedisKey;
+	/**
+	 * 抓取信息存储key
+	 */
 	private String transInfoKey;
+	/**
+	 * 任务编号
+	 */
     private int index;
+    /**
+     * 时间格式化类  非线程安全 每个任务独享
+     */
     private SimpleDateFormat sdf;
 	public GetStockTransInfoBatchTask(int index, String bacthRedisKey, String transInfoKey) {
 		super();
@@ -69,7 +81,7 @@ public class GetStockTransInfoBatchTask implements TaskInterface{
 						redis.rpush(transInfoKey, info);
 					}
 				}
-				Log4jUtil.info("线程[" + index + "]抓取线上信息完毕，获取[" + transInfoList.size() +"]条.....");
+				Log4jUtil.info("线程[" + index + "]抓取线上信息完毕，获取[" + transInfoList.size() + "]条.....");
 			} catch (Exception e) {
 				Log4jUtil.error("线程[" + index + "]抓取线上信息失败", e);
 			} finally {

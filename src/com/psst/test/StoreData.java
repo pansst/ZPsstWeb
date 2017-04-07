@@ -7,7 +7,7 @@ public class StoreData {
     public String getUuid() {
         return uuid;
     }
-    public void setUuid(String uuid) {
+    public void setUuid(String uuid) { 
         this.uuid = uuid;
     }
     public String getName() {
